@@ -50,17 +50,19 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
 function signup({ email, password, req }) {
   const user = new User({ email, password });
   if (!email || !password) { throw new Error('You must provide an email and password.'); }
-
+  console.log('start signup', user)
   return User.findOne({ email })
     .then(existingUser => {
+      console.log('new user', existingUser)
       if (existingUser) { throw new Error('Email in use'); }
       return user.save();
     })
-    .then(user => {
+    .then(userCreated => {
+      console.log('resutl:', userCreated)
       return new Promise((resolve, reject) => {
-        req.logIn(user, (err) => {
+        req.logIn(userCreated, (err) => {
           if (err) { reject(err); }
-          resolve(user);
+          resolve(userCreated);
         });
       });
     });
