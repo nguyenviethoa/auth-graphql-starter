@@ -11,7 +11,11 @@ const client = new ApolloClient({
 	// By default, this client will send queries to the
   //  `/graphql` endpoint on the same host
   dataIdFromObject: o => o.id,	
-  link: new HttpLink(),
+  link: new HttpLink({ 
+	  uri: '/graphql',
+		// Additional fetch options like `credentials` or `headers`
+		credentials: 'same-origin'
+	  }),
   cache: new InMemoryCache()
 });
 
